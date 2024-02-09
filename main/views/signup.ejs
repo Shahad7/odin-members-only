@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Signup</title>
+        <link rel="stylesheet" href="stylesheets/style.css" />
+    </head>
+    <body>
+        <form method="post" action="/signup">
+            <div>
+                full name:
+                <input
+                    type="text"
+                    name="name"
+                    value="<%=typeof user==='undefined'?'':user.name %>"
+                />
+            </div>
+            <div>
+                email :
+                <input
+                    type="email"
+                    name="email"
+                    value="<%=typeof user==='undefined'?'':user.email %>"
+                />
+            </div>
+            <div>
+                password :
+                <input
+                    type="password"
+                    name="password"
+                    value="<%=typeof user==='undefined'?'':user.password %>"
+                />
+            </div>
+            <div>
+                confirm password :
+                <input
+                    type="password"
+                    name="confirm_password"
+                    value="<%=typeof user==='undefined'?'':user.confirm_password %>"
+                />
+            </div>
+            <div>
+                <span style="color: green">
+                    Enter admin code if you wanna sign up as admin
+                </span>
+                <input type="password" name="admin_code" />
+            </div>
+            <input type="submit" value="signup" />
+        </form>
+        <div class="errors">
+            <%if(typeof errors!='undefined') errors.forEach(elt=>{ %>
+            <p><%=elt.msg%></p>
+            <% })%>
+        </div>
+    </body>
+</html>

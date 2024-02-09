@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="stylesheets/style.css" />
+        <title>Login</title>
+    </head>
+    <body>
+        <form method="post" action="/login">
+            <div>
+                username :
+                <input
+                    type="email"
+                    name="email"
+                    value="<%=
+                typeof user==='undefined'?'':user.email %>"
+                />
+            </div>
+            <div>
+                password :
+                <input
+                    type="password"
+                    name="password"
+                    value="<%=
+                typeof user==='undefined'?'':user.password %>"
+                />
+            </div>
+            <input type="submit" value="login" />
+            <div style="height: 10px">
+                if you want <a href="/signup">signup </a>here
+            </div>
+        </form>
+        <div class="errors">
+            <%if(typeof errors!='undefined') errors.forEach(elt=>{ %>
+            <p><%=elt.msg%></p>
+            <% })%> 
+
+            <%if(typeof err!='undefined'){ %>
+            <p><%=err['message']%></p><%}%>
+
+            <%if(typeof req!='undefined' && typeof req.session.messages!='undefined'){%> 
+            <p><%= req.session.messages[0]%></p>
+            <%}%>
+</html>
