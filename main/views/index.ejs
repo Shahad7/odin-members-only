@@ -4,8 +4,81 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Home</title>
+        <link rel="stylesheet" href="stylesheets/style.css" />
     </head>
+    
     <body>
-        furi kuri
+        <div style="margin-bottom: 40px;font-weight: bolder;color:darkblue;font-size: large;">Hey, <%=currentUser.name%></div>
+        <div class="new-msg-sec">
+            <form method="post" action="/new_message">
+                <div>
+                    title:
+                    <input
+                        type="text"
+                        name="title"
+                        value="<%=typeof message!=='undefined'?message.title:'' %>"
+                    />
+                </div>
+                <div>
+                    content:
+                    <textarea name="content" cols="30" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Create new message" />
+            </form>
+
+            <div class="errors">
+                <%if(typeof errors!= 'undefined') errors.forEach(elt=>{%>
+                <p><%= elt.msg %></p>
+                <%})%>
+            </div>
+            <a id="logout" href="/logout">Log out</a>
+
+            <div class="join-club-sec" <% const display = currentUser.status == "non-member"? 'block':'none'  %>
+            style="display: <%=display%>;">
+                <form method="post" action="/join_club">
+                    <div>
+                        <input
+                            type="text"
+                            name="secret_code"
+                            placeholder="Enter the secret code"
+                        />
+                        <input type="submit" value="Join the club" />
+                    </div>
+                </form>
+                <div class="errors">
+                    <%if(typeof club_errors!= 'undefined')
+                    club_errors.forEach(elt=>{%>
+                    <p><%= elt.msg %></p>
+                    <%})%>
+                </div>
+            </div>
+        </div>
+        <%if(typeof messages!=='undefined') messages.forEach(elt=>{ %>
+        <div class="message">
+            <div style="margin-bottom: 6px;display: flex;justify-content: space-between;">
+                <div style="font-weight: bolder;color:darkblue;font-size: medium;">
+                    <%=currentUser.status!="non-member"?elt.sender.name:'' %></div>
+                    <% if(currentUser.status=="admin"){%>
+                        <button id="delete" data-key="<%=elt._id%>" onclick="deleteMessage(event)">delete</button>
+                    <%}%>
+            </div>
+            <div><%=elt.content%></div>
+            <div style="margin-top:4px;color:darkred">
+                <%= currentUser.status!="non-member"?elt.timestamp:''%>
+            </div>
+            
+        </div>
+        <%})%>
     </body>
+    <script>
+        const deleteMessage = (e)=>{
+            let id = e.target.dataset.key
+                            fetch(`http://127.0.0.1:3000/delete_message/${id}`)
+                            .then(
+                                location.assign("/")
+                            )
+                            return;
+                        }
+       
+    </script>
 </html>

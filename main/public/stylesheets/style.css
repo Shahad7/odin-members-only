@@ -15,10 +15,16 @@ form {
     flex-direction: column;
 }
 
-form * {
+form input,
+form textarea {
     margin-bottom: 40px;
     height: 80px;
     width: 400px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
 }
 
 button,
@@ -28,4 +34,27 @@ input[type="submit"] {
 
 .errors {
     color: red;
+}
+
+.new-msg-sec {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+
+.message {
+    padding: 30px;
+    border-radius: 20px;
+    border: solid 1px black;
+    margin-bottom: 20px;
+    background-color: #e5e2e2;
+}
+
+.message:hover {
+    background-color: #fff;
+    cursor: text;
+}
+
+.join-club-sec {
+    margin-top: 80px;
 }

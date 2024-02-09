@@ -28,7 +28,7 @@
             </div>
             <input type="submit" value="login" />
             <div style="height: 10px">
-                if you want <a href="/signup">signup </a>here
+                <div style="display: block;">if you want <a href="/signup">signup </a>here</div>
             </div>
         </form>
         <div class="errors">
@@ -42,4 +42,5 @@
             <%if(typeof req!='undefined' && typeof req.session.messages!='undefined'){%> 
             <p><%= req.session.messages[0]%></p>
             <%}%>
+        </div>
 </html>

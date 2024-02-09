@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const passport = require("passport");
+const Message = require("../models/message");
 
 /* simple authentication below,it's important to pass the args to middleware and call
 req.login and redirect as a callback to login this way*/
@@ -118,5 +119,44 @@ exports.signup_post = [
                 },
                 errors: errors.array(),
             });
+    }),
+];
+
+exports.logout = function (req, res, next) {
+    req.logout((err) => {
+        if (err) next(err);
+        else res.redirect("/");
+    });
+};
+
+exports.join_club = [
+    body("secret_code")
+        .notEmpty()
+        .withMessage("enter the code or else out!")
+        .escape()
+        .custom((value) => {
+            if (value.length != 0) return value === process.env.CODE;
+            else return true;
+        })
+        .withMessage("wrong code oopsie :("),
+    asyncHandler(async function (req, res, next) {
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            if (req.body.secret_code === process.env.CODE) {
+                const user = await User.updateOne(
+                    { _id: req.user._id },
+                    { $set: { status: "member" } }
+                );
+                res.redirect("/");
+            }
+        } else {
+            const messages = await Message.find()
+                .populate("sender", "name")
+                .exec();
+            res.render("index", {
+                club_errors: errors.array(),
+                messages: messages,
+            });
+        }
     }),
 ];
